@@ -1,3 +1,7 @@
+.App {
+  padding: 5px;
+}
+
 .item {
   display: flex;
   justify-content: space-between;
