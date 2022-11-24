@@ -1,10 +1,10 @@
 import './App.css';
-import Items from "./Components/Items"
+import ReactRouter from "./router"
 
 function App() {
 
   return (
-    <Items />
+    <ReactRouter />
   );
 }
 
