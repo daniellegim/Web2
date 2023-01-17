@@ -17,6 +17,7 @@
     "react-hook-form": "^7.28.1",
     "react-router-dom": "^6.3.0",
     "styled-components": "^5.3.5",
+    "sweetalert2": "^11.7.0",
     "vanilla-masker": "^1.2.0",
     "yup": "^0.32.11"
   },
