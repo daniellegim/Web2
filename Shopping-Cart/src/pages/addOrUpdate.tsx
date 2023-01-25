@@ -50,9 +50,13 @@ export function AddOrUpdate({ typeAction, productUpdate, products, setProducts }
         const productToAdd = {
             name: product.name,
             price: product.price,
-            imgUrl: product.imgUrl
+            imgUrl: product.imgUrl,
+            description: "",
+            priceUnits: "קילו",
+            availability: true,
+            quantityPerPrice: 1
         };
-        axios.post('https://reqres.in/api/articles/1', productToAdd)
+        axios.post('http://localhost:5000/products', productToAdd)
             .then(res => {
                 Swal.fire({
                     icon: 'success',
@@ -118,7 +122,7 @@ export function AddOrUpdate({ typeAction, productUpdate, products, setProducts }
 
 
 
-                    <form onSubmit={(e) => {
+                    <form style={{flexDirection: 'column'}} onSubmit={(e) => {
                         !status ? editProduct(product.id) : addProduct();
                         e.preventDefault();
                     }}>
@@ -135,10 +139,20 @@ export function AddOrUpdate({ typeAction, productUpdate, products, setProducts }
                             שם מוצר:
                             <input type="text" value={product.name}
                                    onChange={(eve) => {setProduct({...product, name: eve.target.value});  console.log({...product, name: eve.target.value})}} />
-                        </label> <label>
+                        </label>
+                        <label>
                             מחיר:
                             <input type="text" value={product.price} onChange={(eve) => setProduct({...product, price: eve.target.value})} />
+                    </label>
+                        <label>
+                            תמונה:
+                            <input type="text" value={product.imgUrl} onChange={(eve) => setProduct({...product, imgUrl: eve.target.value})} />
+                            { product.imgUrl && <img
+                                src={product.imgUrl}
+                                style={{ width: '70px', height: '75px', objectFit: 'cover' }}
+                            />}
                         </label>
+
                         <input type="submit" value="Submit" />
                     </form>
 

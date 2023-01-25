@@ -5,6 +5,7 @@ import { Store } from './pages/Store'
 import { Navbar } from './components/Navbar'
 import { ShoppingCartProvider } from './context/ShoppingCartContext'
 import { AdminStore } from "./pages/admin-store";
+import * as React from "react";
 
 function App() {
   return (
