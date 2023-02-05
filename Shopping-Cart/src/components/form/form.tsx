@@ -18,6 +18,7 @@ interface FormsProps {
 
 const Form = () => {
     const [user, setUser] = useState<FormsProps>(() => ({} as FormsProps));
+    const [total, setTotal] = useState<any>(0);
     const [loader, setLoader] = useState(false)
 
     const maskPhone = {
@@ -37,10 +38,14 @@ const Form = () => {
 
     const onSubmit = (data: FormsProps) => {
         setLoader(true)
+        setTotal(cartItems.reduce((total, cartItem: any) => {
+            const item = cartItems.find((i: any) => i.id === cartItem.id)
+            return total + (item?.price || 0) * cartItem.quantity
+        }, 0))
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({...data, products: cartItems})
+            body: JSON.stringify({...data, products: cartItems, ...total})
         };
         fetch('http://localhost:5000/orders', requestOptions)
             .then(res =>  res.status === 200 ? setUser(data):
