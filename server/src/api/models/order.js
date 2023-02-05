@@ -10,6 +10,7 @@ const orderSchema = new Schema({
     email: { type: String, required: true },
     Notes: { type: String },
     address: { type: String, required: true },
+    total: { type: String, required: true },
     products: { type: Array, required: true },
 });
 
