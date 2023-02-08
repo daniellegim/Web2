@@ -12,6 +12,7 @@ module.exports = {
     }
   },
   create: async (req, res) => {
+    console.log(req.body)
   let id = Math.round(Math.random() * (99999 - 9999));
   let newProduct = { ...req.body, id};
   const product = new Product(newProduct);

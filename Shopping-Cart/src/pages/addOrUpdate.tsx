@@ -8,6 +8,7 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {schema} from "../components/validators/schema";
 import Swal from "sweetalert2";
 import axios from "axios";
+import {Form} from "react-bootstrap";
 
 interface ProductProps {
     id: string;
@@ -51,6 +52,8 @@ export function AddOrUpdate({ typeAction, productUpdate, products, setProducts }
             name: product.name,
             price: product.price,
             imgUrl: product.imgUrl,
+            productType: product.type,
+            isKosher: product.isKosher,
             description: "",
             priceUnits: "קילו",
             availability: true,
@@ -143,7 +146,19 @@ export function AddOrUpdate({ typeAction, productUpdate, products, setProducts }
                         <label>
                             מחיר:
                             <input type="text" value={product.price} onChange={(eve) => setProduct({...product, price: eve.target.value})} />
-                    </label>
+                        </label>
+                        <label>
+                            סוג (vegetable/fruit):
+                            <input type="text" value={product.type} onChange={(eve) => setProduct({...product, type: eve.target.value})} />
+                        </label>
+                        <Form.Check
+                            type="switch"
+                            id="custom-switch"
+                            label="המוצר כשר"
+                            onClick={(event) => {
+                                setProduct({...product, isKosher: event.target.checked})
+                            }}
+                        />
                         <label>
                             תמונה:
                             <input type="text" value={product.imgUrl} onChange={(eve) => setProduct({...product, imgUrl: eve.target.value})} />
