@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import axios from 'axios';
 import Button from "react-bootstrap/Button";
 import * as React from "react";
+import {Navbar} from "../components/Navbar";
 
 export function Store() {
     const [data, setData] = useState([]);
@@ -47,6 +48,7 @@ export function Store() {
 
     return (
         <>
+            <Navbar/>
             <div>
                 <label>
 

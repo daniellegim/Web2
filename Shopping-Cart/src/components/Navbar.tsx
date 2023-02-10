@@ -1,13 +1,17 @@
 import { Button, Container, Nav, Navbar as NavbarBs } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
-import { useShoppingCart } from './../context/ShoppingCartContext'
+import { useShoppingCart } from '../context/ShoppingCartContext'
+import React from "react";
+import auth from "../utilities/Firebase";
+import { signOut} from "firebase/auth";
+
 export function Navbar() {
   const { openCart, cartQuantity } = useShoppingCart()
   return (
     <NavbarBs sticky='top' className='bg-white shadow-sm mb-3'>
       <Container>
         <Nav className='me-auto' style={{direction: 'rtl'}}>
-          <Nav.Link to={'store'} as={NavLink}>
+          <Nav.Link to={'/store'} as={NavLink}>
             חנות
           </Nav.Link>
           <Nav.Link to={'/checkout'} as={NavLink}>
@@ -45,6 +49,9 @@ export function Navbar() {
             </div>
           </Button>
         )}
+        <Button onClick={()=> {
+          signOut(auth)
+        }}>התנתק</Button>
       </Container>
     </NavbarBs>
   )

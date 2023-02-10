@@ -5,6 +5,7 @@ import Swal from 'sweetalert2'
 import Button from "react-bootstrap/Button";
 import {AddOrUpdate} from "./addOrUpdate";
 import * as React from "react";
+import {Navbar} from "../components/Navbar";
 
 export function AdminStore() {
     const [products, setProducts] = useState([]);
@@ -54,6 +55,7 @@ export function AdminStore() {
 
     return (
         <>
+            <Navbar/>
             <div>
                 <div>
                     <label>
