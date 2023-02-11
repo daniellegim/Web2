@@ -6,29 +6,64 @@ import Button from "react-bootstrap/Button";
 import {AddOrUpdate} from "./addOrUpdate";
 import * as React from "react";
 import io from "socket.io-client";
+import { LineChart, Line, XAxis,  YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 export function AdminOrders() {
-    const socket = io('http://localhost:3000');
-
-    socket.on('connect', () => {
-        console.log('Connected to socket.io server');
-
-        socket.on('price_update', (price: any) => {
-            console.log('Received price update:', price);
-        });
-    });
-
+    const data = [
+        { date: new Date('2020-01-01'), price: 100 },
+        { date: new Date('2020-02-01'), price: 110 },
+        { date: new Date('2020-03-01'), price: 105 },
+        { date: new Date('2020-04-01'), price: 90 },
+        { date: new Date('2020-05-01'), price: 95 },
+    ];
     const [orders, setOrders] = useState([]);
     const [textSearch, setTextSearch] = useState([]);
 
     useEffect(() => {
+//         const socket = io('http://localhost:3000');
+//         socket.on('connect', () => {
+//             console.log('Connected to server');
+//         });
+//
+//         socket.on('disconnect', () => {
+//             console.log('Disconnected from server');
+//         });
+//
+// // Emit an event to the server
+//         socket.emit('eventName', 'eventData');
+//
+// // Listen for events from the server
+//         socket.on('eventName', (data) => {
+//             console.log(data);
+//         });
+
         axios
             .get("http://localhost:5000/orders")
             .then((res: any) => {
                 setOrders(res.data);
+                // ליצור מערך כמו הדאטה שבנוי מההזמנות שהגיעו מהשרת
                 console.log(res)
             }).catch(console.error);
     }, []);
+
+    useEffect(()=>{
+        (async function() {
+
+            const socket = io('http://localhost:3000', {
+                transports : ['websocket'],
+            });
+            socket.on("connection", () => {
+                console.log(socket.id);
+            });
+            socket.on('connect_error', ()=> {
+                setTimeout(()=>socket.connect(),5000);
+            });
+            socket.on('price_update', (data) => {
+                console.log(data);
+            });
+        })()
+    },[])
+
 
     const deleteOrder = (order: any) => {
         axios.delete(`http://localhost:5000/orders/${order._id}`, order._id)
@@ -63,6 +98,7 @@ export function AdminOrders() {
         });
     };
 
+
     return (
         <>
             <div>
@@ -95,7 +131,7 @@ export function AdminOrders() {
                     <tbody>
                     {
                         orders?.map((order: any) => (
-                            <tr key={order.id} style={{direction: "rtl"}}>
+                            <tr key={order.Id} style={{direction: "rtl"}}>
                                 <td>
                                     <div className="mb-2">
                                         <Button variant="outline-danger" size="sm" onClick={() => deleteOrder(order)}>
@@ -113,6 +149,16 @@ export function AdminOrders() {
                     }
                     </tbody>
                 </Table>
+            </div>
+            <div>
+                <LineChart width={500} height={300} data={data}>
+                    <XAxis dataKey="date"  />
+                    <YAxis />
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="price" stroke="#8884d8" />
+                </LineChart>
             </div>
         </>
     );

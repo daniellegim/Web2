@@ -16,6 +16,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.28.1",
     "react-router-dom": "^6.3.0",
+    "recharts": "^2.3.2",
     "socket.io-client": "^4.5.4",
     "styled-components": "^5.3.5",
     "sweetalert2": "^11.7.0",

@@ -12,6 +12,7 @@ const orderSchema = new Schema({
     address: { type: String, required: true },
     total: { type: String, required: true },
     products: { type: Array, required: true },
+    time: { type : Date, default: Date.now }
 });
 
 module.exports = mongoose.model('OrderMatala', orderSchema);
