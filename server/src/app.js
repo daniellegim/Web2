@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const http = require('http');
+const scrap = require('./api/utility/scraping');
 
 
 const app= express();
@@ -60,3 +61,4 @@ mongoose.connect(process.env.DB_HOST, { useNewUrlParser: true, useUnifiedTopolog
 
 app.use('/products', products);
 app.use('/orders', orders);
+// scrap();
