@@ -147,10 +147,15 @@ export function AddOrUpdate({ typeAction, productUpdate, products, setProducts }
                             מחיר:
                             <input type="text" value={product.price} onChange={(eve) => setProduct({...product, price: eve.target.value})} />
                         </label>
-                        <label>
-                            סוג (vegetable/fruit):
-                            <input type="text" value={product.type} onChange={(eve) => setProduct({...product, type: eve.target.value})} />
-                        </label>
+                            <input type={"radio"} name={'type'} value={'fruit'}
+                                   onChange={(eve) => {
+                                       setProduct({...product, type: 'fruit'})
+                                   }}/> פירי
+                            <br/>
+                            <input type={"radio"} name={'type'} value={'vegetable'}
+                                   onChange={() => {
+                                       setProduct({...product, type: 'fruit'})
+                                   }}/>ירק
                         <Form.Check
                             type="switch"
                             id="custom-switch"
