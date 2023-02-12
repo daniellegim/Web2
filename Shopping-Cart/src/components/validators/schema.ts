@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import {validateInputEmail, validateInputPhone, validateOnlyLetters} from "../../utilities/validatesInput";
+import {validateInputEmail, validateInputPhone, validateOnlyLetters} from "../../utilities/fire-base/validatesInput";
 
 export const schema  = Yup.object().shape({
   firstName: Yup.string().min(0).required('שם פרטי אינו תקין').test('Only letters', 'Only letters and big than 3 letter', value => validateOnlyLetters(value)),

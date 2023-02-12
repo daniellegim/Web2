@@ -2,7 +2,7 @@ import { Button, Container, Nav, Navbar as NavbarBs } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 import { useShoppingCart } from '../context/ShoppingCartContext'
 import React from "react";
-import auth from "../utilities/Firebase";
+import auth from "../utilities/fire-base/Firebase";
 import { signOut} from "firebase/auth";
 
 export function Navbar() {

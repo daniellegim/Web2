@@ -8,8 +8,8 @@ import * as React from "react";
 import {AdminOrders} from "./pages/admin-orders";
 import {Login} from "./pages/Login";
 import SignUp from "./pages/sign-up";
-import {AuthProvider} from "./utilities/auth-provider";
-import WithPrivateRoute from "./utilities/private-routs";
+import {AuthProvider} from "./utilities/fire-base/auth-provider";
+import WithPrivateRoute from "./utilities/fire-base/private-routs";
 
 function App() {
     return (

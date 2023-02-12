@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {signInWithEmailAndPassword} from "firebase/auth";
-import auth from "../utilities/Firebase";
+import auth from "../utilities/fire-base/Firebase";
 
 export function Login() {
     const [email, setEmail] = useState("");
