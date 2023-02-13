@@ -30,7 +30,6 @@ export function AdminOrders() {
             });
             socket.send('connection')
             socket.on("connection", () => {
-                console.log('badayi')
                 console.log(socket.id);
             });
             socket.on('connect_error', ()=> {
