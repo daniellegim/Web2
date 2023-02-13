@@ -1,4 +1,5 @@
 const Order = require('../models/order');
+const {sendMessageToClients} = require("../service/socket");
 
 module.exports = {
     getAllOrders: async (req, res, next) => {
@@ -10,16 +11,20 @@ module.exports = {
             res.status(400);
         }
     },
-    createOrder: (req, res) => {
+    createOrder: async (req, res) => {
         let newOrder = req.body;
 
         let id = Math.round(Math.random() * (99999 - 9999));
 
         newOrder.Id = id;
         const order = new Order(newOrder);
+        const orders = await Order.find({});
 
         order.save(newOrder).then(() => {
              res.send(newOrder);
+            Order.find({}).then((orders) => {
+                sendMessageToClients('orders_update', orders)
+            })
         }).catch((error) => {
             console.log(error);
             res.status(500).json({

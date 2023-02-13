@@ -3,10 +3,8 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import Swal from 'sweetalert2'
 import Button from "react-bootstrap/Button";
-import {AddOrUpdate} from "./addOrUpdate";
 import * as React from "react";
-import io from "socket.io-client";
-import { LineChart, Line, XAxis,  YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import {io} from "socket.io-client";
 
 export function AdminOrders() {
 
@@ -22,6 +20,27 @@ export function AdminOrders() {
                 console.log(res)
             }).catch(console.error);
     }, []);
+
+
+    useEffect(()=>{
+        (async function() {
+            const socket = io('http://localhost:3002', {
+                "force new connection" : true,
+                transports : ['websocket'],
+            });
+            socket.send('connection')
+            socket.on("connection", () => {
+                console.log('badayi')
+                console.log(socket.id);
+            });
+            socket.on('connect_error', ()=> {
+                setTimeout(()=>socket.connect(),5000);
+            });
+            socket.on('orders_update', (data) => {
+                setOrders(data)
+            });
+        })()
+    },[orders])
 
     const deleteOrder = (order: any) => {
         axios.delete(`http://localhost:5000/orders/${order._id}`, order._id)
@@ -107,16 +126,6 @@ export function AdminOrders() {
                     }
                     </tbody>
                 </Table>
-            </div>
-            <div>
-                <LineChart width={500} height={300} data={orders}>
-                    <XAxis dataKey="time"  />
-                    <YAxis />
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="total" stroke="#8884d8" />
-                </LineChart>
             </div>
         </>
     );

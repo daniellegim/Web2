@@ -4,30 +4,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const http = require('http');
 const scrap = require('./api/utility/scraping');
-
+const { startSocketIOConnection } = require('./api/service/socket');
 
 const app= express();
-const serverSocket = http.createServer(app);
-const io = require("socket.io")(serverSocket, {
-    allowRequest: (req, callback) => {
-        const noOriginHeader = req.headers.origin === undefined;
-        callback(null, noOriginHeader);
-    }
-});
-
-io.on('connection', (socket) => {
-    console.log('Client connected');
-
-    socket.on('disconnect', () => {
-        console.log('Client disconnected');
-    });
-});
-
-serverSocket.listen(3000, () => {
-    console.log('Listening on port 3000');
-});
-
-
 // Controllers
 
 const products = require('./api/routes/products');
@@ -56,4 +35,5 @@ mongoose.connect(process.env.DB_HOST, { useNewUrlParser: true, useUnifiedTopolog
 
 app.use('/products', products);
 app.use('/orders', orders);
+startSocketIOConnection();
 // scrap();
