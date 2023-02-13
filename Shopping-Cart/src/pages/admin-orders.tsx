@@ -9,13 +9,7 @@ import io from "socket.io-client";
 import { LineChart, Line, XAxis,  YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 export function AdminOrders() {
-    const data = [
-        { date: new Date('2020-01-01'), price: 100 },
-        { date: new Date('2020-02-01'), price: 110 },
-        { date: new Date('2020-03-01'), price: 105 },
-        { date: new Date('2020-04-01'), price: 90 },
-        { date: new Date('2020-05-01'), price: 95 },
-    ];
+
     const [orders, setOrders] = useState([]);
     const [textSearch, setTextSearch] = useState([]);
 
@@ -151,13 +145,13 @@ export function AdminOrders() {
                 </Table>
             </div>
             <div>
-                <LineChart width={500} height={300} data={data}>
-                    <XAxis dataKey="date"  />
+                <LineChart width={500} height={300} data={orders}>
+                    <XAxis dataKey="time"  />
                     <YAxis />
                     <CartesianGrid strokeDasharray="3 3" />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="price" stroke="#8884d8" />
+                    <Line type="monotone" dataKey="total" stroke="#8884d8" />
                 </LineChart>
             </div>
         </>

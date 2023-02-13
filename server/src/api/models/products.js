@@ -10,7 +10,9 @@ const productSchema = new Schema({
   description: { type: String, required: false },
   priceUnits: { type: String, required: false },
   availability: { type: Boolean, required: false },
-  quantityPerPrice: { type: Number, required: false }
+  quantityPerPrice: { type: Number, required: false },
+  isKosher: { type: Boolean, required: false },
+  productType: { type: String, required: false }
 }, { timestamps: true });
 
 module.exports = mongoose.model('ProductMatala', productSchema);

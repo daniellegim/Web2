@@ -1,14 +1,14 @@
 import * as React from "react";
 import Form from "../components/form/form";
-import {ShoppingCart} from "../components/ShoppingCart";
 import {useState} from "react";
 import {useEffect} from "react";
 import {useShoppingCart} from "../context/ShoppingCartContext";
 import {Stack} from "react-bootstrap";
 import {CartItem} from "../components/CartItem";
+import {Navbar} from "../components/Navbar";
 
 export function CheckOut() {
-    const { closeCart, cartItems } = useShoppingCart()
+    const { cartItems } = useShoppingCart()
 
     const [data, setData] = useState([]);
 
@@ -26,6 +26,7 @@ export function CheckOut() {
 
     return (
     <>
+        <Navbar/>
         <div className='d-flex flex-row'>
         <Stack gap={3} className='m-5'>
             {cartItems?.map((item: any) => (
