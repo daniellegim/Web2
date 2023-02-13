@@ -2,11 +2,15 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Input from "../Input";
 import * as S from "./styleForForm";
-import { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {schema} from "../validators/schema";
 import {Alert} from "react-bootstrap";
 import {useShoppingCart} from "../../context/ShoppingCartContext";
 import Spinner from "react-bootstrap/Spinner";
+import Modal from "react-bootstrap/Modal";
+import axios from "axios";
+import Swal from "sweetalert2";
+import '../../pages/form.css';
 
 interface FormsProps {
     firstName: string;
@@ -17,9 +21,12 @@ interface FormsProps {
 }
 
 const Form = () => {
-    const [user, setUser] = useState<FormsProps>(() => ({} as FormsProps));
-    const [total, setTotal] = useState<any>(0);
+    const [order, setOrder] = useState<any>({
+
+    });
     const [loader, setLoader] = useState(false)
+    const [total, setTotal] = useState<any>()
+    const [orderCheckOut, setOrderCheckoutset] = useState(false)
 
     const maskPhone = {
         values: ["0512345678"],
@@ -33,51 +40,81 @@ const Form = () => {
     } = useForm<FormsProps>({
         resolver: yupResolver(schema),
     });
+    const [data, setData] = useState([]);
+
     const { cartItems } = useShoppingCart()
 
+    useEffect(() => {
 
-    const onSubmit = (data: FormsProps) => {
-        setLoader(true)
-        setTotal(cartItems.reduce((total, cartItem: any) => {
-            const item = cartItems.find((i: any) => i.id === cartItem.id)
-            return total + (item?.price || 0) * cartItem.quantity
-        }, 0))
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({...data, products: cartItems, ...total})
+
+
+        axios
+            .get("http://localhost:5000/products")
+            .then((res: any) => {
+                setData(res.data);
+                console.log(res)
+aaaa(res.data)
+            }).catch(console.error);
+
+    }, [])
+
+    function addOrder() {
+debugger
+
+
+        const orderToAdd = {
+            ...order, total
         };
-        fetch('http://localhost:5000/orders', requestOptions)
-            .then(res =>  res.status === 200 ? setUser(data):
-                alert('שליחת בקשה נכשלה' +
-                    '' +
-                    'אנא נסה שנית מאוחר יותר')
-            ).finally(() => setLoader(false));
-    };
+        axios.post('http://localhost:5000/orders', orderToAdd)
+            .then(res => {
+                setOrderCheckoutset(true)
+                Swal.fire({
+                    icon: 'success',
+                    title: 'הוספת הזמנה בוצעה',
+                    showConfirmButton: false,
+                    timer: 1500
+                })            }).catch(err => {
+            Swal.fire({
+                icon: 'error',
+                title: 'הוספת הזמנה נכשלה ',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }).finally(() => setLoader(true));
+    }
 
+    const aaaa =  (data) => {
+        const t = cartItems.reduce((total, cartItem: any) => {
+            const item = data.find((i: any) => i.id === cartItem.id)
+            return total + (item?.price || 0) * cartItem.quantity
+        }, 0)
+        setTotal(t);
+        return t
+    }
     return (
-        <S.Wrapper>
-            <h1 onClick={() => setUser({} as FormsProps)} style={{direction: 'rtl'}}>הזנת הפרטים להזמנה</h1>
-            {Object.keys(user).length !== 0 ? (
+    <div>
+
+    {
+        orderCheckOut ? (
                 <form>
                     <S.WrapperInfo >
                         <div style={{direction: 'rtl'}}>
                             <h3>שם: </h3>
                             <h4>
-                                {user.firstName} {user.lastName}
+                                {order?.firstName} {order.lastName}
                             </h4>
                         </div>
                         <div style={{direction: 'rtl'}}>
                             <h3>כתובת: </h3>
-                            <h4>{user.address}</h4>
+                            <h4>{order?.address}</h4>
                         </div>
                         <div style={{direction: 'rtl'}}>
                             <h3>טלפון: </h3>
-                            <h4>{user.phone}</h4>
+                            <h4>{order?.phone}</h4>
                         </div>
                         <div style={{direction: 'rtl'}}>
                             <h3>מייל: </h3>
-                            <h4>{user.email}</h4>
+                            <h4>{order?.email}</h4>
                         </div>
 
                         <div style={{direction: 'rtl', margin: '20px'}}>
@@ -86,50 +123,57 @@ const Form = () => {
 
                     </S.WrapperInfo>
                 </form>
-            ) : (
-                <form onSubmit={handleSubmit(onSubmit)} style={{direction: 'rtl'}}>
-                    <S.DoubleContainer>
-                        <Input
-                            {...register("firstName")}
-                            errors={errors.firstName}
-                            label="שם פרטי"
-                        />
-                        <Input
-                            {...register("lastName")}
-                            errors={errors.lastName}
-                            label="שם משפחה "
-                        />
-                    </S.DoubleContainer>
-                    <Input
-                        {...register("phone")}
-                        errors={errors.phone}
-                        label="טלפון"
-                        mask={maskPhone}
-                    />
-                    <Input
-                        {...register("address")}
-                        errors={errors.address}
-                        label="כתובת"
-                    />
-                    <Input {...register("email")} errors={errors.email} label="אימייל" />
+            )
+            :
+            (
+            <form style={{flexDirection: 'column'}} onSubmit={(e) => {
+                addOrder();
+                e.preventDefault();
+            }}>
 
-                    <S.WrapperButton>
-                        <button className="btn-hover" type="submit">
-                            הזמן
-
-                            {
-                                 loader ?  <Spinner animation="border" role="status">
-                                        <span className="visually-hidden">Loading...</span>
-                                    </Spinner> : null
+                {
+                    loader ?  <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner> : null
 
 
-}
-                        </button>
-                    </S.WrapperButton>
-                </form>
-            )}
-        </S.Wrapper>
-    );
+                }
+
+                <label>
+                    שם פרטי:
+                    <input className={"input"} onChange={(eve) => {setOrder({...order,firstName: eve.target.value});  console.log({...order, firstName: eve.target.value})}} />
+
+                </label>
+                <br/>
+                <label>
+                    שם משפחה:
+                    <input className={"input"}  type="text" value={order.lastName} onChange={(eve) => setOrder({...order, lastName: eve.target.value})} />
+                </label>
+                <br/>
+
+                <label>
+                    טלפון
+                    <input className={"input"}  type="number" value={order.phone} onChange={(eve) => setOrder({...order, phone: eve.target.value})} />
+                </label>
+                <br/>
+
+                <label>
+                    כתובת
+                    <input className={"input"}  type="text" value={order.address} onChange={(eve) => setOrder({...order, address: eve.target.value})} />
+                </label>
+                <br/>
+
+                <label>
+                    אימייל
+                    <input  className={"input"}  type="text" value={order.email} onChange={(eve) => setOrder({...order, email: eve.target.value})} />
+                </label>
+                <br/>
+
+                <input className={"submit"}  type="submit" value="Submit" />
+            </form>
+            )
+            }
+    </div>)
 };
 
 export default Form;

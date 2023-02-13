@@ -18,11 +18,6 @@ const io = require("socket.io")(serverSocket, {
 io.on('connection', (socket) => {
     console.log('Client connected');
 
-    socket.on('price_update', (price) => {
-        console.log('Received price update:', price);
-        io.emit('price_update', price);
-    });
-
     socket.on('disconnect', () => {
         console.log('Client disconnected');
     });

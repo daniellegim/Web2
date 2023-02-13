@@ -6,17 +6,9 @@ import Button from "react-bootstrap/Button";
 import {AddOrUpdate} from "./addOrUpdate";
 import * as React from "react";
 import io from "socket.io-client";
+import { LineChart, Line, XAxis,  YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 export function AdminOrders() {
-    const socket = io('http://localhost:3000');
-
-    socket.on('connect', () => {
-        console.log('Connected to socket.io server');
-
-        socket.on('price_update', (price: any) => {
-            console.log('Received price update:', price);
-        });
-    });
 
     const [orders, setOrders] = useState([]);
     const [textSearch, setTextSearch] = useState([]);
@@ -26,6 +18,7 @@ export function AdminOrders() {
             .get("http://localhost:5000/orders")
             .then((res: any) => {
                 setOrders(res.data);
+                // ליצור מערך כמו הדאטה שבנוי מההזמנות שהגיעו מהשרת
                 console.log(res)
             }).catch(console.error);
     }, []);
@@ -63,6 +56,7 @@ export function AdminOrders() {
         });
     };
 
+
     return (
         <>
             <div>
@@ -95,7 +89,7 @@ export function AdminOrders() {
                     <tbody>
                     {
                         orders?.map((order: any) => (
-                            <tr key={order.id} style={{direction: "rtl"}}>
+                            <tr key={order.Id} style={{direction: "rtl"}}>
                                 <td>
                                     <div className="mb-2">
                                         <Button variant="outline-danger" size="sm" onClick={() => deleteOrder(order)}>
@@ -113,6 +107,16 @@ export function AdminOrders() {
                     }
                     </tbody>
                 </Table>
+            </div>
+            <div>
+                <LineChart width={500} height={300} data={orders}>
+                    <XAxis dataKey="time"  />
+                    <YAxis />
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="total" stroke="#8884d8" />
+                </LineChart>
             </div>
         </>
     );
