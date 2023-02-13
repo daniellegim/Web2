@@ -14,23 +14,6 @@ export function AdminOrders() {
     const [textSearch, setTextSearch] = useState([]);
 
     useEffect(() => {
-//         const socket = io('http://localhost:3000');
-//         socket.on('connect', () => {
-//             console.log('Connected to server');
-//         });
-//
-//         socket.on('disconnect', () => {
-//             console.log('Disconnected from server');
-//         });
-//
-// // Emit an event to the server
-//         socket.emit('eventName', 'eventData');
-//
-// // Listen for events from the server
-//         socket.on('eventName', (data) => {
-//             console.log(data);
-//         });
-
         axios
             .get("http://localhost:5000/orders")
             .then((res: any) => {
@@ -39,25 +22,6 @@ export function AdminOrders() {
                 console.log(res)
             }).catch(console.error);
     }, []);
-
-    useEffect(()=>{
-        (async function() {
-
-            const socket = io('http://localhost:3000', {
-                transports : ['websocket'],
-            });
-            socket.on("connection", () => {
-                console.log(socket.id);
-            });
-            socket.on('connect_error', ()=> {
-                setTimeout(()=>socket.connect(),5000);
-            });
-            socket.on('price_update', (data) => {
-                console.log(data);
-            });
-        })()
-    },[])
-
 
     const deleteOrder = (order: any) => {
         axios.delete(`http://localhost:5000/orders/${order._id}`, order._id)
