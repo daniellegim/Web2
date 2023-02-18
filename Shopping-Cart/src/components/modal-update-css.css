@@ -1,0 +1,62 @@
+/* Style the modal overlay */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Style the modal content */
+.modal-content {
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Style the modal header */
+.modal-header {
+    background-color: #f1f1f1;
+    border-bottom: none;
+}
+
+/* Style the modal title */
+.modal-title {
+    color: #333;
+}
+
+/* Style the modal body */
+.modal-body {
+    padding: 20px;
+}
+
+/* Style the modal footer */
+.modal-footer {
+    border-top: none;
+}
+
+/* Style the modal buttons */
+.modal-footer button {
+    border-radius: 20px;
+}
+
+/* Style the primary modal button */
+.modal-footer .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+/* Style the secondary modal button */
+.modal-footer .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.label-input {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.order-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}

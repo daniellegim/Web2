@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import * as React from "react";
 import { LineChart, Line, XAxis,  YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import {Navbar} from "../components/Navbar";
 
 export function AdminOrdersGrahp() {
 
@@ -21,6 +22,8 @@ return {...order, length: order.products.length}
 
     return (
         <>
+            <Navbar/>
+
             <div>
                 <LineChart width={500} height={300} data={orders}>
                     <XAxis dataKey="time"  />

@@ -48,7 +48,7 @@ module.exports = {
     deleteOrder: (req, res) => {
         const {orderId} = req.params;
 
-        Order.remove({Id: orderId}).then(() => {
+        Order.deleteOne({Id: orderId}).then(() => {
             res.send(orderId);
         }).catch((error) => {
             res.status(500);
@@ -66,10 +66,9 @@ module.exports = {
         });
     },
     getOrdersByUser: (req, res) => {
-        const {phoneNumber} = req.query;
-        const regexp = new RegExp(phoneNumber);
-
-        Order.find({PhoneNumber: phoneNumber}).then((orders) => {
+        const {mail} = req.params;
+        console.log(mail)
+        Order.find({email: mail}).then((orders) => {
             res.send(orders);
         }).catch((error) => {
             console.log(error);

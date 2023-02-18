@@ -14,6 +14,8 @@ export function Login() {
     async function handleFormSubmit() {
         try {
             console.log(email, password)
+            localStorage.setItem('email', email);
+
             await signInWithEmailAndPassword(auth, email, password);
             navigate("/store");
         } catch (e) {
