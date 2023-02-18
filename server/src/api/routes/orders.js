@@ -13,7 +13,7 @@ const {
 } = require('../controllers/order');
 
 router.get('/search', searchOrders);
-router.get('/filter', getOrdersByUser);
+router.get('/filter/:mail', getOrdersByUser);
 router.get('/', getAllOrders);
 router.get('/:orderId', getOrder);
 router.post('/', createOrder);

@@ -11,6 +11,7 @@ import SignUp from "./pages/sign-up";
 import {AdminOrdersGrahp} from "./pages/adminOrdersGraph";
 import {AuthProvider} from "./utilities/fire-base/auth-provider";
 import WithPrivateRoute from "./utilities/fire-base/private-routs";
+import {MyOrders} from "./pages/myOrders";
 
 function App() {
     return (
@@ -22,7 +23,9 @@ function App() {
                         <Route path='/CheckOut' element={<WithPrivateRoute><CheckOut/></WithPrivateRoute>}/>
                         <Route path='/admin' element={<WithPrivateRoute><AdminStore/></WithPrivateRoute>}/>
                         <Route path='/admin/orders/graph' element={<WithPrivateRoute><AdminOrdersGrahp/></WithPrivateRoute>}/>
-                        <Route path='/admin/orders'
+                        <Route path='/user/orders'
+                               element={<WithPrivateRoute><MyOrders/></WithPrivateRoute>}/>
+                               <Route path='/admin/orders'
                                element={<WithPrivateRoute><AdminOrders/></WithPrivateRoute>}/>
                         <Route path='/login' element={<Login/>}/>
                         <Route path='/signUp' element={<SignUp/>}/>

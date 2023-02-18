@@ -13,6 +13,8 @@ export function Navbar() {
         <Nav className='me-auto' style={{direction: 'rtl'}}>
           <Nav.Link to={'/store'} as={NavLink}>
             חנות
+          </Nav.Link>  <Nav.Link to={'/user/orders'} as={NavLink}>
+            ההזמנות שלי
           </Nav.Link>
           <Nav.Link to={'/checkout'} as={NavLink}>
             עגלת קניות
